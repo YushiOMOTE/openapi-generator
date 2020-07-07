@@ -143,7 +143,7 @@ public class RustClientCodegen extends DefaultCodegen implements CodegenConfig {
         instantiationTypes.put("map", "GoMap");*/
 
         typeMapping.clear();
-        typeMapping.put("integer", "i32");
+        typeMapping.put("integer", "i64");
         typeMapping.put("long", "i64");
         typeMapping.put("number", "f32");
         typeMapping.put("float", "f32");
@@ -295,6 +295,7 @@ public class RustClientCodegen extends DefaultCodegen implements CodegenConfig {
         supportingFiles.add(new SupportingFile("model_mod.mustache", modelFolder, "mod.rs"));
         supportingFiles.add(new SupportingFile("lib.mustache", "src", "lib.rs"));
         supportingFiles.add(new SupportingFile("Cargo.mustache", "", "Cargo.toml"));
+        supportingFiles.add(new SupportingFile("de.rs", "src", "de.rs"));
 
         supportingFiles.add(new SupportingFile(getLibrary() + "/api_mod.mustache", apiFolder, "mod.rs"));
         supportingFiles.add(new SupportingFile(getLibrary() + "/configuration.mustache", apiFolder, "configuration.rs"));
