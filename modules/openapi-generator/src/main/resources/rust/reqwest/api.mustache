@@ -202,7 +202,23 @@ pub {{#supportAsync}}async {{/supportAsync}}fn {{{operationId}}}(configuration: 
     {{/required}}
     {{/supportAsync}}
     {{#supportAsync}}
-    // TODO: support file upload for '{{{baseName}}}' parameter
+    // TODO: use async fs
+    let mut f = std::fs::File::open({{paramName}}.clone()).unwrap();
+    use std::io::Read;
+    let mut b = Vec::<u8>::new();
+    f.read_to_end(&mut b).unwrap();
+    form = form.part(
+        "{{baseName}}",
+        reqwest::multipart::Part::bytes(b)
+            .file_name(
+                {{paramName}}
+                    .file_name()
+                    .map(|p| p.to_string_lossy().to_string())
+                    .unwrap_or_else(|| "".into()),
+            )
+            .mime_str(mime_guess::from_path({{paramName}}).first_or_octet_stream().as_ref())
+            .unwrap(),
+    );
     {{/supportAsync}}
     {{/isFile}}
     {{^isFile}}
