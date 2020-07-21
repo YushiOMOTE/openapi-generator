@@ -202,6 +202,9 @@ pub {{#supportAsync}}async {{/supportAsync}}fn {{{operationId}}}(configuration: 
     {{/required}}
     {{/supportAsync}}
     {{#supportAsync}}
+    {{^required}}
+    if let Some({{paramName}}) = {{paramName}}.as_ref() {
+    {{/required}}
     // TODO: use async fs
     let mut f = std::fs::File::open({{paramName}}.clone()).unwrap();
     use std::io::Read;
@@ -219,6 +222,9 @@ pub {{#supportAsync}}async {{/supportAsync}}fn {{{operationId}}}(configuration: 
             .mime_str(mime_guess::from_path({{paramName}}).first_or_octet_stream().as_ref())
             .unwrap(),
     );
+    {{^required}}
+    }
+    {{/required}}
     {{/supportAsync}}
     {{/isFile}}
     {{^isFile}}
